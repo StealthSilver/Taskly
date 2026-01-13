@@ -50,7 +50,7 @@ function LoginPageContent() {
           />
         </div>
         <div className="flex flex-col leading-tight text-center">
-          <span className="text-base font-semibold tracking-tight text-slate-900">
+          <span className="text-lg sm:text-xl font-semibold tracking-tight text-slate-900">
             Taskly
           </span>
         </div>
