@@ -196,7 +196,7 @@ export default function Home() {
             Capture, organize, and complete your todos.
           </p>
         </div>
-        <div className="inline-flex items-center justify-center rounded-full bg-orange-50 px-3 py-1 text-xs font-medium text-orange-600">
+        <div className="inline-flex items-center justify-center rounded-full bg-orange-50 px-2 sm:px-3 py-0.5 sm:py-1 text-[9px] sm:text-xs font-medium text-orange-600 whitespace-nowrap">
           {total} task{total === 1 ? "" : "s"}
         </div>
       </header>
