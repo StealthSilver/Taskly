@@ -1,0 +1,20 @@
+TODO APPLICATION
+
+1. create a new next js applicaiton
+
+npx create-next-app@latest
+
+TypeScript → ✅
+App Router → ✅
+Tailwind → ✅
+ESLint → ✅
+src folder → ✅
+alias → ✅
+
+2. cd todo 
+3. npm run dev
+
+now go to the localhost:3000 and check the app is running
+
+4. clean the page.tsx completely and add just a single div
+5. in the layout.tsx edit the metadata
