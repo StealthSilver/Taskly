@@ -30,33 +30,47 @@ export default function Home() {
 
   const PAGE_SIZE = 5;
 
-  const loadTodos = useCallback(async (pageToLoad: number = 1) => {
-    try {
-      setIsLoading(true);
-      setLoadError(null);
-
-      const params = new URLSearchParams({
-        page: String(pageToLoad),
-        limit: String(PAGE_SIZE),
-      });
-
-      const res = await fetch(`/api/todos?${params.toString()}`);
-      if (!res.ok) {
-        throw new Error("Failed to fetch todos");
+  const loadTodos = useCallback(
+    async (
+      pageToLoad: number = 1,
+      options?: {
+        showFullPageLoader?: boolean;
       }
+    ) => {
+      const showFullPageLoader = options?.showFullPageLoader ?? true;
 
-      const data: PaginatedTodosResponse = await res.json();
-      setTodos(data.todos);
-      setTotal(data.total);
-      setTotalPages(data.totalPages);
-      setPage(data.page);
-    } catch (error) {
-      console.error(error);
-      setLoadError("Could not load your tasks. Please try again.");
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
+      try {
+        if (showFullPageLoader) {
+          setIsLoading(true);
+        }
+        setLoadError(null);
+
+        const params = new URLSearchParams({
+          page: String(pageToLoad),
+          limit: String(PAGE_SIZE),
+        });
+
+        const res = await fetch(`/api/todos?${params.toString()}`);
+        if (!res.ok) {
+          throw new Error("Failed to fetch todos");
+        }
+
+        const data: PaginatedTodosResponse = await res.json();
+        setTodos(data.todos);
+        setTotal(data.total);
+        setTotalPages(data.totalPages);
+        setPage(data.page);
+      } catch (error) {
+        console.error(error);
+        setLoadError("Could not load your tasks. Please try again.");
+      } finally {
+        if (showFullPageLoader) {
+          setIsLoading(false);
+        }
+      }
+    },
+    []
+  );
 
   useEffect(() => {
     if (status === "authenticated") {
@@ -88,7 +102,8 @@ export default function Home() {
       await res.json();
 
       // After adding, reload the first page to show newest task
-      await loadTodos(1);
+      // without flashing the full-page loader
+      await loadTodos(1, { showFullPageLoader: false });
     } catch (error) {
       console.error(error);
       setActionError("Could not add todo. Please try again.");
@@ -116,7 +131,8 @@ export default function Home() {
       await res.json();
 
       // Refresh current page to keep list in sync
-      await loadTodos(page);
+      // without flashing the full-page loader
+      await loadTodos(page, { showFullPageLoader: false });
     } catch (error) {
       console.error(error);
       setActionError("Could not update todo. Please try again.");
@@ -138,7 +154,7 @@ export default function Home() {
 
       // Refresh current page (may move to previous page if last item removed)
       const nextPage = page > 1 && todos.length === 1 ? page - 1 : page;
-      await loadTodos(nextPage);
+      await loadTodos(nextPage, { showFullPageLoader: false });
     } catch (error) {
       console.error(error);
       setActionError("Could not delete todo. Please try again.");
@@ -162,7 +178,7 @@ export default function Home() {
       }
 
       await res.json();
-      await loadTodos(page);
+      await loadTodos(page, { showFullPageLoader: false });
     } catch (error) {
       console.error(error);
       setActionError("Could not update todo. Please try again.");
