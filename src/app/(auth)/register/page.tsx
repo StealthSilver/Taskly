@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 
@@ -44,6 +45,23 @@ export default function RegisterPage() {
 
   return (
     <section className="app-card w-full max-w-md px-5 py-6 sm:px-7 sm:py-7 md:px-8 md:py-8">
+      <div className="mb-6 flex items-center justify-center gap-3">
+        <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-slate-900 shadow-sm ring-1 ring-slate-900/10">
+          <Image
+            src="/todo.svg"
+            alt="Taskly logo"
+            width={22}
+            height={22}
+            priority
+          />
+        </div>
+        <div className="flex flex-col leading-tight text-center">
+          <span className="text-base font-semibold tracking-tight text-slate-900">
+            Taskly
+          </span>
+        </div>
+      </div>
+
       <h1 className="mb-1 text-center text-2xl font-semibold text-slate-900">
         Create account
       </h1>

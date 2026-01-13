@@ -21,11 +21,8 @@ export default function Navbar() {
             />
           </div>
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-semibold tracking-tight text-slate-900">
+            <span className="text-base font-semibold tracking-tight text-slate-900">
               Taskly
-            </span>
-            <span className="text-[11px] text-slate-500">
-              Simple daily task manager
             </span>
           </div>
         </Link>
