@@ -58,8 +58,32 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
+      // When a user signs in (via credentials or Google), ensure we have
+      // a corresponding User document and store its id on the JWT.
       if (user) {
-        token.id = (user as any).id;
+        try {
+          await connectDB();
+
+          const email =
+            (token.email as string | undefined) ??
+            ((user as any).email as string | undefined);
+
+          if (email) {
+            let dbUser = await User.findOne({ email });
+
+            if (!dbUser) {
+              dbUser = await User.create({
+                name: (user as any).name,
+                email,
+                image: (user as any).image,
+              });
+            }
+
+            token.id = dbUser._id.toString();
+          }
+        } catch (error) {
+          console.error("JWT callback error", error);
+        }
       }
       return token;
     },
